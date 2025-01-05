@@ -1,0 +1,45 @@
+# Node.js
+frontend/node_modules/
+
+# Build output
+frontend/build/
+
+# React-specific
+frontend/.env
+frontend/.env.local
+frontend/.env.development
+frontend/.env.test
+frontend/.env.production
+
+# Logs
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Python-related
+backend/__pycache__/
+backend/.env
+backend/.env.local
+
+# Virtual environments
+*.env
+*.venv
+
+# Docker-related
+**/Dockerfile
+**/docker-compose.yml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs and text editors
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Miscellaneous
+*.log
+
+# pnpm lock file (optional if using other lock files)
+frontend/pnpm-lock.yaml
