@@ -1,0 +1,35 @@
+-- init.sql.template
+
+-- Create the user
+-- Check if the user exists before creating it
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '${POSTGRES_USER}') THEN
+        CREATE USER ${POSTGRES_USER} WITH PASSWORD '${POSTGRES_PASSWORD}';
+    END IF;
+END
+$$;
+
+-- Create the database
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = '${POSTGRES_DB}') THEN
+        CREATE DATABASE ${POSTGRES_DB} OWNER ${POSTGRES_USER};
+    END IF;
+END
+$$;
+
+-- Switch to the new database
+\connect ${POSTGRES_DB}
+
+-- Create the table
+CREATE TABLE IF NOT EXISTS stopwatch_data (
+    id SERIAL PRIMARY KEY,
+    reason VARCHAR(100) NOT NULL,
+    time_spent FLOAT NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Grant privileges
+GRANT ALL PRIVILEGES ON TABLE stopwatch_data TO ${POSTGRES_USER};
