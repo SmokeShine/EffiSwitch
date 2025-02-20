@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:80"
+    env_file:
+      - ./backend/.env.backend
+    depends_on:
+      db:
+        condition: service_healthy
+    # command: ./wait-for.sh db python app.py
+    volumes:
+      - ./backend:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./frontend/.env.frontend
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      # - /app/node_modules
+
+  db:
+    build: ./postgres
+    env_file:
+      - ./postgres/.env.db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # - ./postgres:/docker-entrypoint-initdb.d/
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d my_database -h db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
