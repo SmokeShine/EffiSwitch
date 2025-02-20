@@ -26,8 +26,8 @@ backend/.env.local
 *.venv
 
 # Docker-related
-**/Dockerfile
-**/docker-compose.yml
+# **/Dockerfile
+# **/docker-compose.yml
 
 # OS files
 .DS_Store
